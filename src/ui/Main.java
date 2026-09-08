@@ -4,6 +4,9 @@ import interfaces.*;
 import model.*;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Clase principal para ejecutar el programa
@@ -12,85 +15,132 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        ArrayList<Pedido> pedidos = new ArrayList<>();
 
-        // Creación de pedidos y calculo de tiempo estimado mediante llamada interna del constructor
-        pedidos.add(new PedidoComida(
+        ArrayList<Pedido> pedidos1 = new ArrayList<>();
+        ArrayList<Pedido> pedidos2 = new ArrayList<>();
+        ArrayList<Pedido> pedidos3 = new ArrayList<>();
+
+
+        // Creación de pedidos y cálculo de tiempo estimado mediante llamada interna del constructor
+        pedidos1.add(new PedidoComida(
                 1,
                 new Direccion("Avenida Matta", 1042, "Santiago"),
-                4,
-                true
+                4
         ));
 
-        pedidos.add(new PedidoEncomienda(
+        pedidos1.add(new PedidoEncomienda(
                 2,
                 new Direccion("Avenida Central", 987, "Maipú"),
-                6,
-                true
+                6
         ));
 
-        pedidos.add(new PedidoExpress(
+        pedidos1.add(new PedidoExpress(
                 3,
                 new Direccion("Avenida Presidente Riesco", 777, "Las Condes"),
-                7,
-                "Farmacia"
+                7
         ));
 
-        // Revisión de pedidos creados visualizando el tiempo estimado
-        for(Pedido p : pedidos){
-            System.out.println("------------- CREACIÓN DE PEDIDO");
-            p.mostrarResumen();
+        pedidos2.add(new PedidoComida(
+                4,
+                new Direccion("Avenida Irarrázaval", 2450, "Ñuñoa"),
+                3
+        ));
+
+        pedidos2.add(new PedidoEncomienda(
+                5,
+                new Direccion("Gran Avenida", 5320, "San Miguel"),
+                8
+        ));
+
+        pedidos2.add(new PedidoExpress(
+                6,
+                new Direccion("Avenida Providencia", 1850, "Providencia"),
+                5
+        ));
+
+        pedidos3.add(new PedidoComida(
+                7,
+                new Direccion("Avenida Pajaritos", 3250, "Maipú"),
+                9
+        ));
+
+        pedidos3.add(new PedidoEncomienda(
+                8,
+                new Direccion("Avenida Vicuña Mackenna", 4100, "Macul"),
+                10
+        ));
+
+        pedidos3.add(new PedidoExpress(
+                9,
+                new Direccion("Avenida Apoquindo", 4500, "Las Condes"),
+                2
+        ));
+
+
+        // Asignación de pedidos a repartidores
+        try {
+            System.out.println("----------- Buscando Repartidores disponibles 🔎");
+            Thread.sleep(3000);
             System.out.println();
-        }
-
-        // Cancelamos el primer pedido
-        System.out.println("------------- CANCELACIÓN DE PEDIDO");
-        ((Cancelable) pedidos.get(0)).cancelar();
-        System.out.println();
-
-        // Reservamos los pedidos. El primero debería fallar
-        for(Pedido pedido : pedidos){
-            System.out.println("------------- RESERVA DE PEDIDO");
-            ((Reservable) pedido).reservar();
+            System.out.println("----------- Se han encontrado repartidores. Los pedidos serán reservados 🔒");
             System.out.println();
-        }
 
-        // Asignamos repartidores/as. El primero debería fallar
-        System.out.println("------------- ASIGNACIÓN DE REPARTIDOR/A");
-        pedidos.get(0).asignarRepartidor();
-        System.out.println();
+            for(Pedido pedido: pedidos1){
+                Thread.sleep(1000);
+                ((Reservable) pedido).reservar();
+            }
+            for(Pedido pedido: pedidos2){
+                Thread.sleep(1000);
+                ((Reservable) pedido).reservar();
+            }
+            for(Pedido pedido: pedidos3){
+                Thread.sleep(1000);
+                ((Reservable) pedido).reservar();
+            }
 
-        System.out.println("------------- ASIGNACIÓN DE REPARTIDOR/A");
-        pedidos.get(1).asignarRepartidor("Javier Rojas");
-        System.out.println();
-
-        System.out.println("------------- ASIGNACIÓN DE REPARTIDOR/A");
-        pedidos.get(2). asignarRepartidor("Marie Curie");
-        System.out.println();
-
-
-
-        // Despachamos todos. El primero debería fallar.
-        for(Pedido pedido : pedidos){
-            System.out.println("------------- DESPACHO DE PEDIDO");
-            ((Despachable) pedido).despachar();
             System.out.println();
-        }
+            System.out.println("----------- Asignando pedidos a repartidores 📝");
+            Thread.sleep(1000);
+            Repartidor repartidor1 = new Repartidor("🤖", "Arnold Schwarzenegger", pedidos1);
+            System.out.println("Se asignaron pedidos a: " + repartidor1.getIcon() + " " +  repartidor1.getNombre());
 
-        // Entregamos el último pedido.
-        System.out.println("------------- ENTREGA DE PEDIDO");
-        ((Entregable) pedidos.get(2)).entregar();
-        System.out.println();
+            Thread.sleep(1000);
+            Repartidor repartidor2 = new Repartidor("🥊", "Rocky Balboa", pedidos2);
+            System.out.println("Se asignaron pedidos a: " + repartidor2.getIcon() + " " +  repartidor2.getNombre());
 
-        // Finalmente vemos el historial de los 3 pedidos
 
-        for(Pedido pedido: pedidos){
-            System.out.println("------------- HISTORIAL DE PEDIDO");
-            ((Rastreable) pedido).verHistorial();
+            Thread.sleep(1000);
+            Repartidor repartidor3 = new Repartidor("🥋","Chuck Norris", pedidos3);
+            System.out.println("Se asignaron pedidos a: " + repartidor3.getIcon() + " " + repartidor3.getNombre());
             System.out.println();
+
+            Thread.sleep(1000);
+            System.out.println("----------- Iniciando despacho concurrente 🚗🛵🚲");
+            System.out.println();
+
+            ExecutorService executor = Executors.newFixedThreadPool(3); // Objeto que administrará 3 hilos concurrentes
+            executor.execute(repartidor1);
+            executor.execute(repartidor2);
+            executor.execute(repartidor3);
+
+            executor.shutdown();
+
+            try {
+                executor.awaitTermination(1, TimeUnit.MINUTES);
+                System.out.println("----------- Todos los repartidores han finalizado 🎉🎉🎉🎉🎉");
+                System.out.println();
+                System.out.println("Verifiquemos 1 pedido");
+                System.out.println();
+                pedidos1.get(1).mostrarResumen();
+                System.out.println();
+                ((Rastreable) pedidos1.get(1)).verHistorial();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-
-
 
     }
 }

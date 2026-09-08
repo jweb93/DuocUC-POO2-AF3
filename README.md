@@ -1,5 +1,5 @@
 ![Duoc UC](https://www.duoc.cl/wp-content/uploads/2022/09/logo-0.png)
-# 🧠 Actividad Sumativa 1 – Desarrollo Orientado a Objetos II
+# 🧠 Actividad Formativa 3 – Desarrollo Orientado a Objetos II
 
 ## 💻 Proyecto: SpeedFast
 ## 👤 Autor del proyecto
@@ -11,7 +11,7 @@
 ---
 
 ## 📘 Descripción general del sistema
-Este proyecto da respuesta a la Actividad Sumativa 1 de la asignatura 
+Este proyecto da respuesta a la Actividad Formativa 3 de la asignatura 
 *Desarrollo Orientado a Objetos II*. 
 
 En la propuesta se desarrolla la superclase abstracta Pedido con atributos base,
@@ -35,6 +35,9 @@ composición (clase Dirección), encapsulamiento (atributos privados y
 métodos getter/setter), polimorfismo (sobreescritura de métodos), desacoplamiento (interfaces) 
 y mantiene documentación de código usando Javadocs.
 
+Adicionalmente en esta actualización, se incorpora concurrencia de tareas mediante hilos
+gestionados por objeto ExecuteService.
+
 ---
 
 ## 🧱 Estructura general del proyecto
@@ -51,10 +54,12 @@ src
 │   └── Reservable.java
 ├── model
 │   ├── Direccion.java
+│   ├── EstadoPedido.java
 │   ├── Pedido.java
 │   ├── PedidoComida.java
 │   ├── PedidoEncomienda.java
-│   └── PedidoExpress.java
+│   ├── PedidoExpress.java    
+│   └── Repartidor.java 
 └── ui
     └── Main.java
 ````
@@ -63,14 +68,14 @@ src
 
 ## 🔎 Diagrama de clases
 
-![Diagrama de clases](docs/AS1_UML.png)
+![Diagrama de clases](docs/AF3_UML.png)
 
 ## ⚙️ Instrucciones para clonar y ejecutar el proyecto
 
 1. Clone el repositorio desde GitHub:
 
 ```bash
-git clone https://github.com/jweb93/DuocUC-POO2-AS1.git
+git clone https://github.com/jweb93/DuocUC-POO2-AF3.git
 ```
 
 2. Abra el proyecto en IntelliJ IDEA.
@@ -82,8 +87,8 @@ archivo `docs/index.html`
 
 ---
 
-**Repositorio GitHub:** https://github.com/jweb93/DuocUC-POO2-AS1
-**Fecha de entrega:** \[31/08/2026]
+**Repositorio GitHub:** https://github.com/jweb93/DuocUC-POO2-AF3
+**Fecha de entrega:** \[07/09/2026]
 
 ---
 

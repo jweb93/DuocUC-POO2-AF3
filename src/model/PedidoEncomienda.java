@@ -7,21 +7,10 @@ import interfaces.*;
  */
 
 public class PedidoEncomienda extends Pedido implements Despachable, Cancelable, Rastreable, Entregable, Reservable {
-    private boolean fragil;
 
     // Constructor
-    public PedidoEncomienda(int idPedido, Direccion direccionEntrega, double distanciaKM, boolean fragil) {
+    public PedidoEncomienda(int idPedido, Direccion direccionEntrega, double distanciaKM) {
         super(idPedido, direccionEntrega, distanciaKM);
-        this.fragil = fragil;
-    }
-
-    // Getter and Setters
-    public boolean isFragil() {
-        return fragil;
-    }
-
-    public void setFragil(boolean fragil) {
-        this.fragil = fragil;
     }
 
     // Implementación del método abstracto
@@ -41,8 +30,8 @@ public class PedidoEncomienda extends Pedido implements Despachable, Cancelable,
 
     @Override
     public void asignarRepartidor(){
-        if(getEstado().equals("En preparación")){
-            System.out.println("Asignando un/a repartidor/a para entregar su encomienda N° " + getIdPedido());
+        if(getEstado() == EstadoPedido.EN_PREPARACION){
+            //System.out.println("Asignando un/a repartidor/a para entregar su encomienda N° " + getIdPedido());
             agregaHistorial("Se asignó un/a repartidor/a");
         }else{
             System.out.println("Sólo se puede asignar un/a repartidor/a cuando el pedido está En preparación");
@@ -51,10 +40,10 @@ public class PedidoEncomienda extends Pedido implements Despachable, Cancelable,
     }
 
     @Override
-    public void asignarRepartidor(String nombre){
-        if(getEstado().equals("En preparación")){
-            System.out.println("Asignando a " + nombre + " para entregar su encomienda N° " + getIdPedido());
-            agregaHistorial("Se asignó a " + nombre + " como repartidor/a");
+    public void asignarRepartidor(Repartidor repartidor){
+        if(getEstado() == EstadoPedido.EN_PREPARACION){
+            //System.out.println("Asignando a " + repartidor.getNombre() + " para entregar su encomienda N° " + getIdPedido());
+            agregaHistorial("Se asignó a " + repartidor.getNombre() + " como repartidor/a");
         }else{
             System.out.println("Sólo se puede asignar un/a repartidor/a cuando el pedido está En preparación");
         }
@@ -64,9 +53,9 @@ public class PedidoEncomienda extends Pedido implements Despachable, Cancelable,
 
     @Override
     public void reservar() {
-        if(getEstado().equals("Por reservar")){
+        if(getEstado() == EstadoPedido.POR_RESERVAR){
             System.out.println("Se ha reservado la encomienda N°: " + getIdPedido());
-            setEstado("En preparación");
+            setEstado(EstadoPedido.EN_PREPARACION);
         }else{
             System.out.println("No fue posible reservar la encomienda N° " + getIdPedido() + " ya que se encuentra " + getEstado());
         }
@@ -74,9 +63,9 @@ public class PedidoEncomienda extends Pedido implements Despachable, Cancelable,
 
     @Override
     public void cancelar() {
-        if(getEstado().equals("Por reservar")){
+        if(getEstado() == EstadoPedido.POR_RESERVAR){
             System.out.println("Se ha cancelado la encomienda N°: " + getIdPedido());
-            setEstado("Cancelado");
+            setEstado(EstadoPedido.CANCELADO);
         }else{
             System.out.println("No fue posible cancelar la encomienda N° " + getIdPedido() + " ya que se encuentra " + getEstado());
         }
@@ -84,9 +73,9 @@ public class PedidoEncomienda extends Pedido implements Despachable, Cancelable,
 
     @Override
     public void despachar() {
-        if(getEstado().equals("En preparación")){
-            System.out.println("Se ha despachado la encomienda N°: " + getIdPedido());
-            setEstado("En despacho");
+        if(getEstado() == EstadoPedido.EN_PREPARACION){
+            //System.out.println("Se ha despachado la encomienda N°: " + getIdPedido());
+            setEstado(EstadoPedido.EN_DESPACHO);
         }else{
             System.out.println("No fue posible despachar la encomienda N° " + getIdPedido() + " ya que se encuentra " + getEstado());
         }
@@ -94,9 +83,9 @@ public class PedidoEncomienda extends Pedido implements Despachable, Cancelable,
 
     @Override
     public void entregar() {
-        if(getEstado().equals("En despacho")){
-            System.out.println("Se ha entregado la encomienda N°: " + getIdPedido());
-            setEstado("Entregado");
+        if(getEstado() == EstadoPedido.EN_DESPACHO){
+            //System.out.println("Se ha entregado la encomienda N°: " + getIdPedido());
+            setEstado(EstadoPedido.ENTREGADO);
         }else{
             System.out.println("No fue posible entregar la encomienda N° " + getIdPedido() + " ya que se encuentra " + getEstado());
         }

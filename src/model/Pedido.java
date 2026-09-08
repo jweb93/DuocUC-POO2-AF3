@@ -11,15 +11,15 @@ public abstract class  Pedido {
     private Direccion direccionEntrega;
     private double distanciaKM;
     private ArrayList<String> historial;
-    private String estado; // En preparación, En despacho, Entregado, Cancelado
+    private EstadoPedido estadoPedido; // En preparación, En despacho, Entregado, Cancelado
 
     public Pedido(int idPedido, Direccion direccionEntrega, double distanciaKM){
         this.idPedido = idPedido;
         this.direccionEntrega = direccionEntrega;
         this.distanciaKM = distanciaKM;
         this.historial = new ArrayList<>();
-        this.estado = "Por reservar";
-        agregaHistorial(this.estado);
+        this.estadoPedido = EstadoPedido.POR_RESERVAR;
+        agregaHistorial(this.estadoPedido.getDescripcion());
     }
 
 // Getter and Setters
@@ -57,13 +57,13 @@ public abstract class  Pedido {
         this.historial = historial;
     }
 
-    public String getEstado() {
-        return estado;
+    public EstadoPedido getEstado() {
+        return estadoPedido;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-        agregaHistorial(estado);
+    public void setEstado(EstadoPedido estadoPedido) {
+        this.estadoPedido = estadoPedido;
+        agregaHistorial(this.estadoPedido.getDescripcion());
     }
 
     // Método base implementado para mostrar resumen
@@ -80,8 +80,8 @@ public abstract class  Pedido {
     }
 
     // Método base implementado para asignar repartidor específico
-    public void asignarRepartidor(String nombre){
-        System.out.println("Asignando a " + nombre + " para entregar su pedido");
+    public void asignarRepartidor(Repartidor repartidor){
+        System.out.println("Asignando a " + repartidor.getNombre() + " para entregar su pedido");
     }
 
     // Método abstracto que deberá ser implementado por las subclases.
