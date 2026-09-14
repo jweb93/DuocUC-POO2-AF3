@@ -45,8 +45,8 @@ public class Repartidor implements Runnable{
 
     @Override
     public void run(){
-        try {
-            for(Pedido pedido : pedidosAsignados){
+        for(Pedido pedido : pedidosAsignados){
+            try{
                 pedido.asignarRepartidor(this);
 
                 Thread.sleep(3000 + random.nextInt(1000)); // Tiempo que tarda en llegar a retirar el pedido
@@ -58,12 +58,20 @@ public class Repartidor implements Runnable{
                 ((Entregable) pedido).entregar();
                 System.out.println(icon + " Repartidor " + nombre + " entregó pedido N° " + pedido.getIdPedido());
                 System.out.println();
+            }catch (InterruptedException e){
+                Thread.currentThread().interrupt(); // Una interrupción del Thread.sleep() levanta una excepcion, sin embargo
+                // la flag de interrumpt() del hilo se limpia y es coo si no estuviera interrumpido. Entonces, dentro del catch
+                // se actualiza (corrige) la flag de interrumpido.
+                System.out.println(
+                        icon + " Repartidor " + nombre +
+                                " fue interrumpido. Se detienen sus entregas."
+                );
+
+                break;
 
             }
 
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
 
+        }
     }
 }

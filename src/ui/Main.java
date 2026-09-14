@@ -126,20 +126,30 @@ public class Main {
             executor.shutdown();
 
             try {
-                executor.awaitTermination(1, TimeUnit.MINUTES);
-                System.out.println("----------- Todos los repartidores han finalizado 🎉🎉🎉🎉🎉");
-                System.out.println();
-                System.out.println("Verifiquemos 1 pedido");
-                System.out.println();
-                pedidos1.get(1).mostrarResumen();
-                System.out.println();
-                ((Rastreable) pedidos1.get(1)).verHistorial();
+                boolean termino = executor.awaitTermination(1, TimeUnit.MINUTES); // Hace esperar a main a que terminen los hilos
+                // de executor. Espera hasta 1 min, luego, retorna true si efectivamente terminaron o false si no.
+                // se podría incluso almacenar el resultado para evaluar con if-else que hará main despúes
+                // boolean termino = executor.await....
+
+                if (termino){
+                    System.out.println("----------- Todos los repartidores han finalizado 🎉🎉🎉🎉🎉");
+                    System.out.println();
+                    System.out.println("Verifiquemos 1 pedido");
+                    System.out.println();
+                    pedidos1.get(1).mostrarResumen();
+                    System.out.println();
+                    ((Rastreable) pedidos1.get(1)).verHistorial();
+                }else{
+                    System.out.println("----------- No todos los pedidos han sido repartidos aun ;(");
+                }
+
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
 
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
+            System.out.println("La espera de los repartidores fue interrumpida.");
         }
 
     }
